@@ -1,1 +1,1 @@
-# final_game_of_life
+# Game Of Life - Final Project INFO6205
