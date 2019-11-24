@@ -90,7 +90,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
     public static final int MaxGenerations = 1000;
 
     public static void main(String[] args) {
-        String patternName = args.length > 0 ? args[0] : "Glider1";
+        String patternName = args.length > 0 ? args[0] : "GosperGliderGun1";
         System.out.println("Game of Life with starting pattern: " + patternName);
         final String pattern = Library.get(patternName);
         final long generations = run(0L, pattern);
