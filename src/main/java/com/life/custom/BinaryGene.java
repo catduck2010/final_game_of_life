@@ -6,15 +6,17 @@
 package com.life.custom;
 
 import io.jenetics.Gene;
+import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.Verifiable;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
  * @author lihang
  */
-public class BinaryGene implements Gene<Boolean, BinaryGene> {
+public class BinaryGene implements Gene<Boolean, BinaryGene>, Verifiable, Factory<BinaryGene> {
 
     private Boolean value;
 

@@ -5,17 +5,18 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * This class represents the physical 2-dimensional layout of a Group.
- * By convention, it must have clear rows and columns around any live cells.
+ * This class represents the physical 2-dimensional layout of a Group. By
+ * convention, it must have clear rows and columns around any live cells.
  * <p>
- * This class was designed to optimize the performance of Groups.
- * However, it hasn't been thoroughly tested and I'm fairly sure it needs significant work.
+ * This class was designed to optimize the performance of Groups. However, it
+ * hasn't been thoroughly tested and I'm fairly sure it needs significant work.
  */
 class Matrix {
+
     /**
      * Constructor designed for creating a blank Matrix.
      *
-     * @param width  the width.
+     * @param width the width.
      * @param height the height.
      */
     Matrix(int width, int height) {
@@ -27,26 +28,26 @@ class Matrix {
     }
 
     /**
-     * Constructor designed for creating a blank Matrix.
-     * NOTE: the count and bits functions must be consistent.
+     * Constructor designed for creating a blank Matrix. NOTE: the count and
+     * bits functions must be consistent.
      *
-     * @param width         the width.
-     * @param height        the height.
+     * @param width the width.
+     * @param height the height.
      * @param countFunction the count function.
-     * @param bitsFunction  the initialization function.
+     * @param bitsFunction the initialization function.
      */
     Matrix(int width, int height, BiFunction<Integer, Integer, Integer> countFunction, BiFunction<Integer, Integer, Long> bitsFunction) {
         this(width, height, countFunction.apply(width, height), initializeCells(width, height, bitsFunction));
     }
 
     /**
-     * Constructor designed for creating the next generation of a Matrix.
-     * Note that only "fit" Matrix instances can be cloned in this way.
+     * Constructor designed for creating the next generation of a Matrix. Note
+     * that only "fit" Matrix instances can be cloned in this way.
      *
-     * @param width  the width.
+     * @param width the width.
      * @param height the height.
-     * @param count  the count of live cells.
-     * @param cells  the representation of cells.
+     * @param count the count of live cells.
+     * @param cells the representation of cells.
      */
     private Matrix(int width, int height, int count, Bits[][] cells) {
         this.width = width;
@@ -58,14 +59,18 @@ class Matrix {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Matrix matrix = (Matrix) o;
-        return width == matrix.width &&
-                height == matrix.height &&
-                count == matrix.count &&
-                fit == matrix.fit &&
-                cellsEqual(matrix);
+        return width == matrix.width
+                && height == matrix.height
+                && count == matrix.count
+                && fit == matrix.fit
+                && cellsEqual(matrix);
     }
 
     @Override
@@ -127,14 +132,16 @@ class Matrix {
             Bits[] rowA = row(j);
             Bits[] rowB = matrix.row(j);
             ok = rowA.length == rowB.length;
-            for (int i = 0; ok && i < rowA.length; i++)
+            for (int i = 0; ok && i < rowA.length; i++) {
                 ok = rowA[i].equals(rowB[i]);
+            }
         }
         return ok;
     }
 
     /**
-     * Method to get the neighbors of each cell according to the current state of this Matrix.
+     * Method to get the neighbors of each cell according to the current state
+     * of this Matrix.
      *
      * @return an instance of Neighbors.
      */
@@ -154,21 +161,25 @@ class Matrix {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int j = 0; j < height; j++)
-            for (int i = 0; i < row(j).length; i++)
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < row(j).length; i++) {
                 sb.append(Long.toHexString(getBits(j, i).bits)).append(Newline);
+            }
+        }
         return sb.toString();
     }
 
     private Bits[] row(int y) {
-        if (y >= 0 && y < cells.length)
+        if (y >= 0 && y < cells.length) {
             return cells[y];
-        else
+        } else {
             throw new ArrayIndexOutOfBoundsException("No such row: " + y);
+        }
     }
 
     /**
-     * Class to aid in the construction of a "pretty" representation of the Matrix.
+     * Class to aid in the construction of a "pretty" representation of the
+     * Matrix.
      */
     private class Pretty {
 
@@ -178,16 +189,22 @@ class Matrix {
 
         @Override
         public String toString() {
-            for (int i = 0; i < width; i++) sb.append(Dash);
+            for (int i = 0; i < width; i++) {
+                sb.append(Dash);
+            }
             sb.append(Newline);
             for (int j = 0; j < height; j++) {
                 sb.append(Vbar);
                 final Bits[] row = row(j);
-                for (Bits bits : row) sb.append(bits);
+                for (Bits bits : row) {
+                    sb.append(bits);
+                }
                 sb.append(Vbar).append(Newline);
             }
             sb.append(Space);
-            for (int i = 0; i < width; i++) sb.append(Dash);
+            for (int i = 0; i < width; i++) {
+                sb.append(Dash);
+            }
             sb.append(Newline);
             return sb.toString();
         }
@@ -199,7 +216,8 @@ class Matrix {
     }
 
     /**
-     * Class to represent the neighbor counts of the current state of this Matrix.
+     * Class to represent the neighbor counts of the current state of this
+     * Matrix.
      */
     class Neighbors {
 
@@ -216,20 +234,24 @@ class Matrix {
          * Method to get the number of neighbors of the point p.
          *
          * @param p the point in question.
-         * @return the number of neighbors, or -1 if point is out of range (maybe should throw exception).
+         * @return the number of neighbors, or -1 if point is out of range
+         * (maybe should throw exception).
          */
         int getCount(Point p) {
-            if (isValid(p)) return getCount(p.getX(), p.getY());
-            else return -1;
+            if (isValid(p)) {
+                return getCount(p.getX(), p.getY());
+            } else {
+                return -1;
+            }
         }
-
 
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
             for (int j = 0; j < height; j++) {
-                for (int i = 0; i < width; i++)
+                for (int i = 0; i < width; i++) {
                     sb.append(neighbors[i][j]);
+                }
                 sb.append(Newline);
             }
 
@@ -238,9 +260,11 @@ class Matrix {
 
         boolean doCountsMatch() {
             int total = 0;
-            for (int j = 0; j < height; j++)
-                for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++) {
+                for (int i = 0; i < width; i++) {
                     total += neighbors[i][j];
+                }
+            }
             return total == count * 8;
         }
 
@@ -251,21 +275,26 @@ class Matrix {
                 for (int i = 0; i < width; i++) {
                     // NOTE: we do the logic here instead of in a Bit instance for performance reasons.
                     final long l = getBits(j, i / BitsPerLong).test(bits);
-                    if (l != 0L) mask.updateNeighborhood(i, j);
+                    if (l != 0L) {
+                        mask.updateNeighborhood(i, j);
+                    }
                     bits >>= 1;
                 }
             }
         }
 
         private class NeighborhoodMask {
+
             void updateNeighborhood(int i, int j) {
-                for (int k = 0; k < Three; k++)
+                for (int k = 0; k < Three; k++) {
                     for (int l = 0; l < Three; l++) {
                         int v = i + k - 1;
                         int w = j + l - 1;
-                        if (v >= 0 && v < width && w >= 0 && w < height)
+                        if (v >= 0 && v < width && w >= 0 && w < height) {
                             neighbors[v][w] += mask[k][l];
+                        }
                     }
+                }
             }
 
             NeighborhoodMask() {
@@ -277,8 +306,9 @@ class Matrix {
             private int[][] getMask() {
                 int[][] mask = new int[Three][Three];
                 for (int k = 0; k < Three; k++) {
-                    for (int l = 0; l < Three; l++)
+                    for (int l = 0; l < Three; l++) {
                         mask[k][l] = 1;
+                    }
                 }
                 mask[1][1] = 0;
                 return mask;
@@ -305,9 +335,11 @@ class Matrix {
     }
 
     /**
-     * This static inner class represents a series of up to 64 bits in the matrix.
+     * This static inner class represents a series of up to 64 bits in the
+     * matrix.
      */
     static class Bits {
+
         private long bits; // the actual bit values.
         private int length; // the number of bits which are significant.
 
@@ -378,11 +410,15 @@ class Matrix {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             Bits bits1 = (Bits) o;
-            return bits == bits1.bits &&
-                    length == bits1.length;
+            return bits == bits1.bits
+                    && length == bits1.length;
         }
 
         @Override
@@ -392,16 +428,18 @@ class Matrix {
     }
 
     /**
-     * This class deals with bit operations required for the row-representation of cells.
+     * This class deals with bit operations required for the row-representation
+     * of cells.
      */
     private static class Bit {
 
         /**
          * Constructor:
          *
-         * @param bit   the index of the bit (0..63) which this Bit represents.
-         * @param index the index of long in the Matrix row which this Bit represents.
-         * @param on    is true if this represents an "on" bit.
+         * @param bit the index of the bit (0..63) which this Bit represents.
+         * @param index the index of long in the Matrix row which this Bit
+         * represents.
+         * @param on is true if this represents an "on" bit.
          */
         Bit(int bit, int index, boolean on) {
             this.bit = bit;
@@ -412,7 +450,7 @@ class Matrix {
         /**
          * Constructor:
          *
-         * @param x  is the (x) index of a point on the grid.
+         * @param x is the (x) index of a point on the grid.
          * @param on is true if this represents an "on" bit.
          */
         Bit(int x, boolean on) {
@@ -439,14 +477,16 @@ class Matrix {
 
         private long getMask() {
             long mask = HighBit;
-            if (!on) mask = ~mask;
+            if (!on) {
+                mask = ~mask;
+            }
             mask >>= bit;
             return mask;
         }
 
         /**
-         * The index of the appropriate bit, with 0 corresponding to the highest bit,
-         * and 63 corresponding to the lowest bit.
+         * The index of the appropriate bit, with 0 corresponding to the highest
+         * bit, and 63 corresponding to the lowest bit.
          */
         private final int bit;
 
@@ -466,12 +506,16 @@ class Matrix {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             Bit bit1 = (Bit) o;
-            return bit == bit1.bit &&
-                    index == bit1.index &&
-                    on == bit1.on;
+            return bit == bit1.bit
+                    && index == bit1.index
+                    && on == bit1.on;
         }
 
         @Override
@@ -492,7 +536,9 @@ class Matrix {
         final Bits[][] bits = new Bits[height][width / BitsPerLong + 1];
         for (int j = 0; j < height; j++) {
             int w = width;
-            for (int i = 0; i < bits[j].length; i++, w -= BitsPerLong) bits[j][i] = new Bits(function.apply(i, j), w);
+            for (int i = 0; i < bits[j].length; i++, w -= BitsPerLong) {
+                bits[j][i] = new Bits(function.apply(i, j), w);
+            }
         }
         return bits;
     }
@@ -513,12 +559,18 @@ class Matrix {
             emptyRowN[i] = new Bits(cells[0][0].length);
         }
         System.arraycopy(cells, 0, rows, height0, cellsLen);
-        if (height0 > 0) rows[0] = emptyRow0;
-        if (heightN > 0) rows[rowsLen - 1] = emptyRowN;
+        if (height0 > 0) {
+            rows[0] = emptyRow0;
+        }
+        if (heightN > 0) {
+            rows[rowsLen - 1] = emptyRowN;
+        }
         for (final Bits[] row : rows) {
             final Bits bits = shift(row, width0, widthN);
             if (bits.length > 0) // extend rows[j] with new element
+            {
                 throw new RuntimeException("NotYetImplemented");
+            }
         }
         return rows;
     }
@@ -527,7 +579,9 @@ class Matrix {
         Bits bitsPre = new Bits(width0);
         Bits bitsPost = new Bits(0);
         for (int i = 0; i < row.length; i++) {
-            if (i == row.length - 1) bitsPost = new Bits(widthN);
+            if (i == row.length - 1) {
+                bitsPost = new Bits(widthN);
+            }
             bitsPre = shift(bitsPre, row[i], bitsPost);
         }
         return bitsPre;
@@ -557,7 +611,8 @@ class Matrix {
     private static final int BitsPerLong = 64;
 
     /**
-     * This constant represents a single bit at the high end of the 64 possible bits.
+     * This constant represents a single bit at the high end of the 64 possible
+     * bits.
      */
     private static final long HighBit = 0x80000000L;
 
@@ -574,8 +629,9 @@ class Matrix {
         Matrix.Bits[][] result = Arrays.copyOf(new Object[cells.length], cells.length, Matrix.Bits[][].class);
         for (int i = 0; i < cells.length; i++) {
             result[i] = Arrays.copyOf(cells[i], cells[i].length, Bits[].class);
-            for (int j = 0; j < result[i].length; j++)
+            for (int j = 0; j < result[i].length; j++) {
                 result[i][j] = new Bits(cells[i][j]);
+            }
         }
         return result;
     }
@@ -593,14 +649,13 @@ class Matrix {
     }
 
     /**
-     * This is the overall width of this Matrix.
-     * NOTE: there should be no cells in the outer rows/columns.
+     * This is the overall width of this Matrix. NOTE: there should be no cells
+     * in the outer rows/columns.
      */
     private final int width;
 
     /**
-     * This is the overall height of this Matrix.
-     * Ditto as for width.
+     * This is the overall height of this Matrix. Ditto as for width.
      */
     private final int height;
 
@@ -610,7 +665,8 @@ class Matrix {
     private int count;
 
     /**
-     * This indicates whether all of the points fit inside the single outer rows/columns of this Matrix.
+     * This indicates whether all of the points fit inside the single outer
+     * rows/columns of this Matrix.
      */
     // TODO implement me
     private boolean fit;
