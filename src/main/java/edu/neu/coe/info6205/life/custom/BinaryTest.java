@@ -6,6 +6,7 @@
 package edu.neu.coe.info6205.life.custom;
 
 import edu.neu.coe.info6205.life.base.Game;
+import edu.neu.coe.info6205.life.base.Game.Behavior;
 import io.jenetics.Chromosome;
 import io.jenetics.EliteSelector;
 import io.jenetics.Genotype;
@@ -23,7 +24,8 @@ public class BinaryTest {
     static int WIDTH = 4;
 
     public static Long fitness(Genotype<BinaryGene> gt) {
-        return Game.run(0L, explainer(gt.getChromosome(), WIDTH)).generation;
+        Behavior b = Game.run(0L, explainer(gt.getChromosome(), WIDTH));
+        return (long)(b.generation*b.growth);
     }
 
     public static String explainer(Chromosome<BinaryGene> ch, int width) {
