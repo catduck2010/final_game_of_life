@@ -69,13 +69,13 @@ public class BinaryChromosome implements Chromosome<BinaryGene> {
 
     @Override
     public String toString() {
-        String str="";
+        String str = "";
         for (int i = 0; i < length; i++) {
             if (i != 0) {
-                str+="|";
+                str += "|";
             }
             char c = (iSeq.get(i).getAllele()) ? 'T' : 'F';
-            str+=String.valueOf(c);
+            str += String.valueOf(c);
         }
         return str;
     }

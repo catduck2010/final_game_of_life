@@ -102,13 +102,15 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
     }
 
     public static long run(long generation, List<Point> points) {
-        return run(create(generation, points), (l, g) -> System.out.println("generation " + l + "; grid=" + g));
+        //return run(create(generation, points), (l, g) -> System.out.println("generation " + l + "; grid=" + g));
+        return run(create(generation, points), (l, g) -> {});
     }
 
     public static Game create(long generation, List<Point> points) {
         final Grid grid = new Grid(generation);
         grid.add(Group.create(generation, points));
-        BiConsumer<Long, Group> groupMonitor = (l, g) -> System.out.println("generation " + l + ";\ngroup=\n" + g.render());
+        //BiConsumer<Long, Group> groupMonitor = (l, g) -> System.out.println("generation " + l + ";\ngroup=\n" + g.render());
+        BiConsumer<Long, Group> groupMonitor = (l, g) -> {};
         return new Game(generation, grid, null, groupMonitor);
     }
 
@@ -118,7 +120,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
         }
         Game g = game;
         while (!g.terminated()) {
-            System.out.println(g.render());
+            //System.out.println(g.render());
             g = g.generation(gridMonitor);
         }
         return g.generation;
