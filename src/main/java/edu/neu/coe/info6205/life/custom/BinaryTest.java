@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.life.custom;
+package edu.neu.coe.info6205.life.custom;
 
 import edu.neu.coe.info6205.life.base.Game;
 import io.jenetics.Chromosome;
@@ -20,32 +20,26 @@ import io.jenetics.util.Factory;
  */
 public class BinaryTest {
 
-    static int WIDTH = 2;
+    static int WIDTH = 4;
 
-    private static Long fitness(Genotype<BinaryGene> gt) {
-        return Game.run(0L, explainer(gt.getChromosome(), WIDTH));
+    public static Long fitness(Genotype<BinaryGene> gt) {
+        return Game.run(0L, explainer(gt.getChromosome(), WIDTH)).generation;
     }
 
-    private static String explainer(Chromosome<BinaryGene> ch, int width) {
+    public static String explainer(Chromosome<BinaryGene> ch, int width) {
         String res = "";
         for (int i = 0; i < ch.length(); i++) {
             if (ch.getGene(i).getAllele()) {
                 res = res + ", " + i / width + " " + i % width;
             }
         }
-
-        return res.length() == 0 ? res : res.substring(1).trim();
-    }
-
-    public static boolean changeWidth(int width) {
-        WIDTH = width;
-        return width == WIDTH;
+        return res.substring(1).trim();
     }
 
     public static void main(String[] args) {
         Factory<Genotype<BinaryGene>> g
                 = Genotype.of(BinaryChromosome.of(BinaryGene.seq(WIDTH * WIDTH)));
-
+        
         Engine<BinaryGene, Long> engine
                 = Engine.builder(BinaryTest::fitness, g)
                         .offspringFraction(0.7)
