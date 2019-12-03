@@ -100,7 +100,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				return generations > 0 ? growth * 1.0 / generations : -0.1;
 		}
 
-		public static final int MaxGenerations = 1000;
+		public static final int MaxGenerations = 3000;
 
 		/**
 		 * Main program for Game of Life.
@@ -122,7 +122,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		 * @return the generation at which the game expired.
 		 */
 		public static Behavior run(long generation, String pattern) {
-				return run(generation, Point.points(pattern), MaxGenerations);
+				return run(generation, pattern, MaxGenerations);
 		}
 
 		/**
@@ -147,7 +147,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 		 */
 		public static Behavior run(long generation, List<Point> points, int maxGenerations) {
 				//return run(create(generation, points), (l, g) -> System.out.println("generation " + l + "; grid=" + g), maxGenerations);
-                                return run(create(generation, points), (l, g) -> {}, maxGenerations);
+                                return run(create(generation, points), (l, g) ->{}, maxGenerations);
 		}
 
 		/**
@@ -160,7 +160,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				final Grid grid = new Grid(generation);
 				grid.add(Group.create(generation, points));
 				//BiConsumer<Long, Group> groupMonitor = (l, g) -> System.out.println("generation " + l + ";\ncount=" + g.getCount());
-                                BiConsumer<Long, Group> groupMonitor = (l, g) -> {};
+                                BiConsumer<Long, Group> groupMonitor = (l, g) ->{};
 				return new Game(generation, grid, null, groupMonitor);
 		}
 
@@ -208,7 +208,6 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 
 				public double evaluate() {
 						switch (reason) {
-								case 0: return -1;
 								case 1: return 0;
 								case 2: return growth;
 								default: return -1;
