@@ -1,1 +1,2 @@
-# Game Of Life - Final Project INFO6205
+# INFO6205_Life
+Repository for the Life project

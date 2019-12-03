@@ -3,20 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.life.custom;
+package edu.neu.coe.info6205.life.custom;
 
 import io.jenetics.Gene;
-import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Verifiable;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
  * @author lihang
  */
-public class BinaryGene implements Gene<Boolean, BinaryGene>, Verifiable, Factory<BinaryGene> {
+public class BinaryGene implements Gene<Boolean, BinaryGene> {
 
     private Boolean value;
 
@@ -51,7 +49,7 @@ public class BinaryGene implements Gene<Boolean, BinaryGene>, Verifiable, Factor
 
     @Override
     public boolean isValid() {
-        return value || !value;
+        return value || value == false;
     }
 
 }
