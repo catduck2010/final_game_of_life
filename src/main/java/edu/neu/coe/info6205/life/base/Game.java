@@ -100,7 +100,7 @@ public class Game implements Generational<Game, Grid>, Countable, Renderable {
 				return generations > 0 ? growth * 1.0 / generations : -0.1;
 		}
 
-		public static final int MaxGenerations = 3000;
+		public static final int MaxGenerations = 1500;
 
 		/**
 		 * Main program for Game of Life.

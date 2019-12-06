@@ -5,12 +5,19 @@
  */
 package edu.neu.coe.info6205.life.custom;
 
+import edu.neu.coe.info6205.life.base.Game;
+import edu.neu.coe.info6205.life.base.Grid;
+import edu.neu.coe.info6205.life.base.Point;
+import static edu.neu.coe.info6205.life.base.Point.points;
 import io.jenetics.EliteSelector;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.Factory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  *
@@ -42,5 +49,19 @@ public class BinaryChroTest {
 //            System.out.print(i.getAllele() + " ");
 //        });
         System.out.println(result.getChromosome());
+    }
+
+    public static void main(String[] args) {
+        List<Point> list = new ArrayList<>();
+        list.add(new Point(0,0));
+        list.add(new Point(0,-1));
+        list.add(new Point(0,-2));
+        
+        Game g = Game.create(0L, list);
+        int i = 5;
+        while (i-- > 0) {
+            g = g.generation((t, u) -> {System.out.println(u.getGroup().getAbsolutePoints());
+            });
+        }
     }
 }
