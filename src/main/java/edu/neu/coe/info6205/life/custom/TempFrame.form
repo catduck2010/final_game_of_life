@@ -25,7 +25,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="wholePanel" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
-              <EmptySpace min="0" pref="325" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="257" max="32767" attributes="0"/>
+              <Component id="checkBoxAuto" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="btnTick" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -35,7 +37,10 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="wholePanel" pref="265" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnTick" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnTick" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkBoxAuto" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -52,6 +57,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTickActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="checkBoxAuto">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Auto"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

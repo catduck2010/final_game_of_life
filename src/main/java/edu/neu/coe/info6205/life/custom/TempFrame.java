@@ -9,6 +9,8 @@ import edu.neu.coe.info6205.life.base.Point;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -21,6 +23,8 @@ public class TempFrame extends javax.swing.JFrame {
      * Creates new form TempFrame
      */
     GamePanel gamePanel;
+    boolean autoRunning;
+    AutoRun autoRun;
 
     public TempFrame() {
         initComponents();
@@ -37,9 +41,31 @@ public class TempFrame extends javax.swing.JFrame {
 
     private void setGamePanel() {
         CardLayout layout = (CardLayout) wholePanel.getLayout();
-        
+
         wholePanel.add("GamePanel", gamePanel);
         layout.next(wholePanel);
+    }
+
+    class AutoRun extends Thread {
+        long sleepTime;
+        public AutoRun(long sleepTime) {
+            this.sleepTime=sleepTime;
+        }
+
+        
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    gamePanel.tick();
+                    Thread.sleep(sleepTime);
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(TempFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
     }
 
     /**
@@ -53,6 +79,7 @@ public class TempFrame extends javax.swing.JFrame {
 
         wholePanel = new javax.swing.JPanel();
         btnTick = new javax.swing.JButton();
+        checkBoxAuto = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,13 +92,17 @@ public class TempFrame extends javax.swing.JFrame {
             }
         });
 
+        checkBoxAuto.setText("Auto");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(wholePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 325, Short.MAX_VALUE)
+                .addGap(0, 257, Short.MAX_VALUE)
+                .addComponent(checkBoxAuto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTick))
         );
         layout.setVerticalGroup(
@@ -79,7 +110,9 @@ public class TempFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(wholePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTick))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTick)
+                    .addComponent(checkBoxAuto)))
         );
 
         pack();
@@ -87,7 +120,18 @@ public class TempFrame extends javax.swing.JFrame {
 
     private void btnTickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTickActionPerformed
         // TODO add your handling code here:
-        gamePanel.tick();
+        if (autoRunning) {
+            autoRun.interrupt();
+            autoRunning = false;
+
+        } else if (!checkBoxAuto.isSelected()) {
+            gamePanel.tick();
+        } else {
+            autoRun = new AutoRun(500L);
+            autoRun.start();
+            autoRunning = true;
+        }
+
     }//GEN-LAST:event_btnTickActionPerformed
 
     /**
@@ -107,13 +151,17 @@ public class TempFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TempFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TempFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TempFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TempFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TempFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TempFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TempFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TempFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -127,6 +175,7 @@ public class TempFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTick;
+    private javax.swing.JCheckBox checkBoxAuto;
     private javax.swing.JPanel wholePanel;
     // End of variables declaration//GEN-END:variables
 }
