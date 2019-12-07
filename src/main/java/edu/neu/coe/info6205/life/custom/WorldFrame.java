@@ -17,16 +17,16 @@ import javax.swing.JPanel;
  *
  * @author lihangzhou
  */
-public class TempFrame extends javax.swing.JFrame {
+public class WorldFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form TempFrame
      */
     GamePanel gamePanel;
-    boolean autoRunning;
+    boolean autoRunning = false;
     AutoRun autoRun;
 
-    public TempFrame() {
+    public WorldFrame() {
         initComponents();
         wholePanel.setSize(30 * 3, 30 * 3);
         List<Point> points = new ArrayList<>();
@@ -39,6 +39,13 @@ public class TempFrame extends javax.swing.JFrame {
         setGamePanel();
     }
 
+    public WorldFrame(int row, int col, List<Point> points) {
+        initComponents();
+        wholePanel.setSize(row * 3, col * 3);
+        gamePanel = new GamePanel(row, col, points);
+        setGamePanel();
+    }
+
     private void setGamePanel() {
         CardLayout layout = (CardLayout) wholePanel.getLayout();
 
@@ -47,25 +54,30 @@ public class TempFrame extends javax.swing.JFrame {
     }
 
     class AutoRun extends Thread {
+
         long sleepTime;
+
         public AutoRun(long sleepTime) {
-            this.sleepTime=sleepTime;
+            this.sleepTime = sleepTime;
         }
 
-        
         @Override
         public void run() {
             try {
                 while (true) {
-                    gamePanel.tick();
+                    doTick();
                     Thread.sleep(sleepTime);
                 }
             } catch (InterruptedException ex) {
-                Logger.getLogger(TempFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(WorldFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
 
+    }
+    
+    public void doTick(){
+        this.lblGen.setText("Gen: "+gamePanel.tick());
     }
 
     /**
@@ -80,6 +92,7 @@ public class TempFrame extends javax.swing.JFrame {
         wholePanel = new javax.swing.JPanel();
         btnTick = new javax.swing.JButton();
         checkBoxAuto = new javax.swing.JCheckBox();
+        lblGen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,25 +107,31 @@ public class TempFrame extends javax.swing.JFrame {
 
         checkBoxAuto.setText("Auto");
 
+        lblGen.setText("Gen:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(wholePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 257, Short.MAX_VALUE)
-                .addComponent(checkBoxAuto)
+                .addComponent(btnTick)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnTick))
+                .addComponent(checkBoxAuto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblGen)
+                .addContainerGap(443, Short.MAX_VALUE))
+            .addComponent(wholePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(wholePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTick)
-                    .addComponent(checkBoxAuto)))
+                    .addComponent(checkBoxAuto)
+                    .addComponent(lblGen))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(wholePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE))
         );
 
         pack();
@@ -125,7 +144,7 @@ public class TempFrame extends javax.swing.JFrame {
             autoRunning = false;
 
         } else if (!checkBoxAuto.isSelected()) {
-            gamePanel.tick();
+            doTick();
         } else {
             autoRun = new AutoRun(500L);
             autoRun.start();
@@ -151,24 +170,25 @@ public class TempFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TempFrame.class
+            java.util.logging.Logger.getLogger(WorldFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TempFrame.class
+            java.util.logging.Logger.getLogger(WorldFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TempFrame.class
+            java.util.logging.Logger.getLogger(WorldFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TempFrame.class
+            java.util.logging.Logger.getLogger(WorldFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TempFrame().setVisible(true);
+                new WorldFrame().setVisible(true);
             }
         });
     }
@@ -176,6 +196,7 @@ public class TempFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTick;
     private javax.swing.JCheckBox checkBoxAuto;
+    private javax.swing.JLabel lblGen;
     private javax.swing.JPanel wholePanel;
     // End of variables declaration//GEN-END:variables
 }

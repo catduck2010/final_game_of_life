@@ -7,6 +7,7 @@ package edu.neu.coe.info6205.life.custom;
 
 import edu.neu.coe.info6205.life.base.Game;
 import edu.neu.coe.info6205.life.base.Game.Behavior;
+import edu.neu.coe.info6205.life.base.Point;
 import io.jenetics.Chromosome;
 import io.jenetics.EliteSelector;
 import io.jenetics.Genotype;
@@ -21,7 +22,7 @@ import io.jenetics.util.Factory;
  */
 public class BinaryTest {
 
-    static int WIDTH = 4;
+    static int WIDTH = 5;
 
     public static Long fitness(Genotype<BinaryGene> gt) {
         Behavior b = Game.run(0L, explainer(gt.getChromosome(), WIDTH));
@@ -59,5 +60,8 @@ public class BinaryTest {
 //            System.out.print(i.getAllele() + " ");
 //        });
         System.out.println(result.getChromosome());
+        WorldFrame wf=new WorldFrame(30, 30, Point.points(explainer(result.getChromosome(), WIDTH)));
+        System.out.println("Opening WorldFrame...");
+        wf.setVisible(true);
     }
 }

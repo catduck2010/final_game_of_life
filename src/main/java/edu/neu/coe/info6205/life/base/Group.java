@@ -234,7 +234,7 @@ public class Group implements Generational<Group, Void>, Renderable, Countable {
      *
      * @return the origin (relative to the Grid).
      */
-    Point getOrigin() {
+    public Point getOrigin() {
         return origin;
     }
 
@@ -547,7 +547,7 @@ public class Group implements Generational<Group, Void>, Renderable, Countable {
         for (Point p : pts) {
             result.add(getAbsolute(p).copy());
         }
-        return result;
+        return pts;
     }
 
     private void applyLifeRules() {
