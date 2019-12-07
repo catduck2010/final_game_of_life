@@ -11,6 +11,7 @@ import edu.neu.coe.info6205.life.base.Point;
 import io.jenetics.Chromosome;
 import io.jenetics.EliteSelector;
 import io.jenetics.Genotype;
+import io.jenetics.Mutator;
 import io.jenetics.Optimize;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
@@ -26,6 +27,7 @@ public class BinaryTest {
 
     public static Long fitness(Genotype<BinaryGene> gt) {
         Behavior b = Game.run(0L, explainer(gt.getChromosome(), WIDTH));
+        System.out.println(b.generation+" "+b.growth);
         return (long)(b.generation*b.growth);
     }
 
@@ -49,6 +51,7 @@ public class BinaryTest {
                         .optimize(Optimize.MAXIMUM)
                         .populationSize(50)
                         .selector(new EliteSelector<>(5))
+                        .alterers(new Mutator<>(0.05))
                         .build();
 
         Genotype<BinaryGene> result
