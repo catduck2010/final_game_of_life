@@ -7,3 +7,6 @@ Please use class **BinaryTest** to run this project. The program would calculate
 **WorldFrame** is the JFrame that to show the evolution of a pattern, and it can tick both manually and automatically. 
 
 The report is at the root directory of this repository.
+BinaryTest.java contains the fitness func, explainer and main method to build GA engine.
+
+The test cases are in BinaryTestTest.java in test package.
