@@ -9,14 +9,14 @@ import java.util.List;
 
 public class World {
 
-    private class LocationOccupied extends Exception {
+    private class LocationOccupiedException extends Exception {
     }
 
     private int ticks;
     private final int width;
     private final int height;
     private final HashMap<String, Cell> cells = new HashMap<>();
-    private final int[][] cached_directions = new int[][]{
+    private final int[][] cachedDirections = new int[][]{
         {-1, 1}, {0, 1}, {1, 1}, // above
         {-1, 0}, {1, 0}, // sides
         {-1, -1}, {0, -1}, {1, -1}, // below
@@ -47,17 +47,17 @@ public class World {
         for (Cell cell : cells.values()) {
             int alive_neighbours = aliveNeighborsAround(cell);
             if (!cell.alive && alive_neighbours == 3) {
-                cell.next_state = 1;
+                cell.nextState = 1;
             } else if (alive_neighbours < 2 || alive_neighbours > 3) {
-                cell.next_state = 0;
+                cell.nextState = 0;
             }
         }
 
         // Then execute the determined action for all cells
         for (Cell cell : cells.values()) {
-            if (cell.next_state != null && cell.next_state == 1) {
+            if (cell.nextState != null && cell.nextState == 1) {
                 cell.alive = true;
-            } else if (cell.next_state != null && cell.next_state == 0) {
+            } else if (cell.nextState != null && cell.nextState == 0) {
                 cell.alive = false;
             }
         }
@@ -76,7 +76,7 @@ public class World {
         for (int y = 0; y <= height; y++) {
             for (int x = 0; x <= width; x++) {
                 Cell cell = cellAt(x, y);
-                rendering.append(cell.to_char());
+                rendering.append(cell.toChar());
             }
             rendering.append("\n");
         }
@@ -119,8 +119,8 @@ public class World {
             // Java won't let us throw an error without catching it
             // so emulate a runtime abort by catching and exiting
             try {
-                throw new LocationOccupied();
-            } catch (LocationOccupied m) {
+                throw new LocationOccupiedException();
+            } catch (LocationOccupiedException m) {
                 System.out.println("Error: World.LocationOccupied " + x + "-" + y + "");
                 System.exit(0);
             }
@@ -138,7 +138,7 @@ public class World {
     private ArrayList<Cell> getNeighborsAround(Cell cell) {
         if (cell.neighbours == null) { // Must return a boolean
             cell.neighbours = new ArrayList<>();
-            for (int[] set : cached_directions) {
+            for (int[] set : cachedDirections) {
                 Cell neighbour = cellAt(
                         (cell.x + set[0]),
                         (cell.y + set[1])
@@ -183,7 +183,7 @@ class Cell {
     public int x;
     public int y;
     public boolean alive;
-    public Integer next_state; // int doesn't allow null values
+    public Integer nextState; // int doesn't allow null values
     public ArrayList<Cell> neighbours;
 
     // Java doesn't have the concept of optional or default values
@@ -192,11 +192,11 @@ class Cell {
         this.x = x;
         this.y = y;
         this.alive = args[0];
-        this.next_state = null;
+        this.nextState = null;
         this.neighbours = null;
     }
 
-    public char to_char() {
+    public char toChar() {
         return this.alive ? 'o' : ' ';
     }
 
